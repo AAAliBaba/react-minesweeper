@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This quick and simple project implements one of my favorite games, Classic Minesweeper. I chose to implement this to learn basic React and Javascript (still needs a lot of code cleaning btw). Perhaps in the future I will add more features :)
+
 ## Available Scripts
 
 In the project directory, you can run:

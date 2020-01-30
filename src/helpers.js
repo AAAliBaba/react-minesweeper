@@ -1,5 +1,15 @@
-var neighbor_rows = [-1, -1, -1, 0, 0,   1, 1, 1];
-var neighbor_cols = [-1,  0,  1, -1, 1, -1, 0, 1];
+//globals that help us compute the new states of the board, avoid direct mutation of states
+export const neighbor_rows = [-1, -1, -1, 0, 0,   1, 1, 1];
+export const neighbor_cols = [-1,  0,  1, -1, 1, -1, 0, 1];
+
+export var bool_arr = [];
+export var flag_arr = [];
+export var val_arr = [];
+for(var i = 0; i < 9; i++)
+{
+    bool_arr[i] = new Array(9).fill(false);
+    flag_arr[i] = new Array(9).fill(false);
+}
 
 export function init_board(arr) {
     var count = 0;
@@ -47,6 +57,12 @@ export function init_board(arr) {
                 arr[i][j] = cnt_mines;
             }
         }
+    }
+
+    //copying over to val_arr
+    for(var v = 0; v < 9; v++)
+    {
+        val_arr[v] = arr[v].slice();
     }
     return arr;
 }

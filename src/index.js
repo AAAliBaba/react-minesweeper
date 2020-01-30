@@ -11,23 +11,6 @@ function Cell(props) {
         );
 }
 
-//globals, these arrays help us check the neighbors of a cell.
-var neighbor_rows = [-1, -1, -1, 0, 0,   1, 1, 1];
-var neighbor_cols = [-1,  0,  1, -1, 1, -1, 0, 1];
-
-//more globals, to avoid direct mutation of Board states
-var bool_arr = [];
-var val_arr = [];
-var flag_arr = [];
-var val_arr_isInitialized = false;
-
-for(var i = 0; i < 9; i++)
-{
-    bool_arr[i] = new Array(9);
-    val_arr[i] = new Array(9);
-    flag_arr[i] = new Array(9);
-}
-
 class Board extends React.Component {
     constructor(props) {
         super(props);
@@ -58,16 +41,16 @@ class Board extends React.Component {
     }
 
     reveal(row, col) {
-        if(flag_arr[row][col])
+        if(helpers.flag_arr[row][col])
             return; //can't reveal a flagged cell.
-        else if(val_arr[row][col] === 0 && !bool_arr[row][col])
+        else if(helpers.val_arr[row][col] === 0 && !helpers.bool_arr[row][col])
         {
-            bool_arr[row][col] = true;
+            helpers.bool_arr[row][col] = true;
 
             for(var i = 0; i < 9; i++)
             {
-                var row_to_check = row + neighbor_rows[i];
-                var col_to_check = col + neighbor_cols[i];
+                var row_to_check = row + helpers.neighbor_rows[i];
+                var col_to_check = col + helpers.neighbor_cols[i];
 
                 if(row_to_check < 0 || row_to_check >= 9 || col_to_check < 0 || col_to_check >= 9)
                     continue; //out of bounds
@@ -79,15 +62,15 @@ class Board extends React.Component {
             }
         }
         else
-            bool_arr[row][col] = true;
+            helpers.bool_arr[row][col] = true;
     }
 
     flag(row, col) {
-        if(!bool_arr[row][col] || flag_arr[row][col])
+        if(!helpers.bool_arr[row][col] || helpers.flag_arr[row][col])
         {
-            flag_arr[row][col] = !flag_arr[row][col];
+            helpers.flag_arr[row][col] = !helpers.flag_arr[row][col];
             var m = this.state.mines;
-            flag_arr[row][col] ? this.setState({mines: (m - 1)}) : this.setState({mines: (m + 1)});
+            helpers.flag_arr[row][col] ? this.setState({mines: (m - 1)}) : this.setState({mines: (m + 1)});
         }
     }
 
@@ -104,19 +87,6 @@ class Board extends React.Component {
             cells_copy[i] = new Array(9);
         }
 
-        if(!val_arr_isInitialized) {
-            for(var j = 0; j < 9; j++)
-            {
-                for(var k = 0; k < 9; k++)
-                {
-                    this.state.cells[j][k].props.face === "" ? bool_arr[j][k] = false : bool_arr[j][k] = true;
-                    val_arr[j][k] = this.state.cells[j][k].props.value;
-                    flag_arr[j][k] = false;
-                }
-            }
-            val_arr_isInitialized = true;
-        }
-
         if(event.type === 'click')
             this.reveal(row, col);
         else
@@ -127,7 +97,7 @@ class Board extends React.Component {
         {
             for(var c = 0; c < 9; c++)
             {
-                if(bool_arr[r][c])
+                if(helpers.bool_arr[r][c])
                 {
                     if(this.state.cells[r][c].props.value === "*")
                     {
@@ -139,7 +109,7 @@ class Board extends React.Component {
                     
                     rev_cells_cnt++;
                 }
-                else if(flag_arr[r][c])
+                else if(helpers.flag_arr[r][c])
                 {
                     cells_copy[r][c] = this.renderCell(r, c, (this.state.cells[r][c].props.value), "M", "white");
                     rev_cells_cnt++;

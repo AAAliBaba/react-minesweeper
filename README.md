@@ -2,6 +2,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 This quick and simple project implements one of my favorite games, Classic Minesweeper. I chose to implement this to learn basic React and Javascript (still needs a lot of code cleaning btw). Perhaps in the future I will add more features :)
 
+Deployed (01/26/2020): https://minesweeper-react-v.herokuapp.com/
+
 ## Available Scripts
 
 In the project directory, you can run:
